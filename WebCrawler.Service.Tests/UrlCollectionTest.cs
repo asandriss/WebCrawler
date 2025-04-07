@@ -1,3 +1,4 @@
+using System.Linq;
 using JetBrains.Annotations;
 using Shouldly;
 using WebCrawler.Service;
@@ -35,6 +36,20 @@ public class UrlCollectionTest
         _ = _collection.GetNext();
         
         _collection.HasNext().ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Add_MultipleUrls_ShouldAllBeAdded()
+    {
+        var urls = new[] { "https://testing.com", "https://testing.com/page", "https://other.com" };
+
+        foreach (var url in urls)
+        {
+            _collection.Add(url);
+        }
+
+        var actual = urls.Select(x => x).ToArray();
+        actual.ShouldBeEquivalentTo(urls);
     }
 
     [Fact]
