@@ -5,4 +5,6 @@ public interface IUrlCollection
     void Add(string url);
     bool HasNext();
     string GetNext();
+    
+    IEnumerable<string> VisitedUrl { get; }
 }

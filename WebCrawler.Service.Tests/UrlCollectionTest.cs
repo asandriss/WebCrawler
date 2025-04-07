@@ -36,4 +36,18 @@ public class UrlCollectionTest
         
         _collection.HasNext().ShouldBeFalse();
     }
+
+    [Fact]
+    public void Add_VisitedUrl_ShouldNotAdd()
+    {
+        var url = "https://test.com";
+        
+        _collection.Add(url);
+        var visted = _collection.GetNext();
+        
+        _collection.Add(url);
+        
+        visted.ShouldBe(url);
+        _collection.HasNext().ShouldBeFalse();
+    }
 }
