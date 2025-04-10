@@ -17,8 +17,8 @@ public class UrlParserTest
                 <body>
                     <a href='http://test.com/page1'>Page 1</a>
                     <a href='https://test.com/page2/'>Page 2</a>
-                    <a href='http://www.test.com/page3'>Page 3</a>
-                    <a href='/page4'>Page 4</a>
+                    <a href='http://www.test.com/page3/'>Page 3</a>
+                    <a href='/page4//'>Page 4</a>
                     <a href='PAGE5/'>Page 5</a>
                     <a href='https://external.com/page6'>External Page 6</a>
                     <a>No Href Link</a>

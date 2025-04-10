@@ -1,6 +1,6 @@
 namespace WebCrawler.Service;
 
-public static class HtmlParserExtension
+public static class HtmlHelperExtension
 {
     public static string NormalizeUrl(this string url, string baseUrl)
     {

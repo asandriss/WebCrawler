@@ -18,7 +18,11 @@ public class UrlCollection : IUrlCollection
     public string GetNext()
     {
         var next = _pending.Dequeue();
+        
+        // this is a very simplistic way of tracking the visited URLs.
+        //  one of the first improvements would make this more robust
         _visited.Add(next);
+        
         return next;
     }
 
