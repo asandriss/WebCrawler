@@ -1,5 +1,6 @@
 using System.Linq;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging.Abstractions;
 using Shouldly;
 using Xunit;
 
@@ -8,7 +9,7 @@ namespace WebCrawler.Service.Tests;
 [TestSubject(typeof(UrlParser))]
 public class UrlParserTest
 {
-    private readonly UrlParser _parser = new();
+    private readonly UrlParser _parser = new(NullLogger<UrlParser>.Instance);
     private const string BaseUrl = "http://test.com";
         
     private const string HtmlContent = @"

@@ -1,9 +1,10 @@
 using System.Runtime.InteropServices.JavaScript;
+using Microsoft.Extensions.Logging;
 using WebCrawler.Abstraction;
 
 namespace WebCrawler.Service;
 
-public class UrlCollection : IUrlCollection
+public class UrlCollection(ILogger<UrlCollection> logger) : IUrlCollection
 {
     private readonly Queue<string> _pending = new();
     private readonly HashSet<string> _visited = [];
@@ -12,7 +13,10 @@ public class UrlCollection : IUrlCollection
     public void Add(string url)
     {
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        {
+            logger.LogWarning("Attempted to add incorrect url [{Url}] to the collection. Will be ignored.", url);
             return;
+        }
 
         var normalizedUri = uri.NormalizeUri();
 

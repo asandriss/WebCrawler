@@ -7,6 +7,7 @@ using Shouldly;
 using WebCrawler.Abstraction;
 using WebCrawler.Service;
 using Xunit;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace WebCrawler.Service.Tests;
 
@@ -21,7 +22,11 @@ public class CrawlerServiceTest
 
     public CrawlerServiceTest()
     {
-        _sut = new CrawlerService(_urlParserMock.Object, _urlCollectionMock.Object, _browserMock.Object);
+        _sut = new CrawlerService(
+            _urlParserMock.Object,
+            _urlCollectionMock.Object,
+            _browserMock.Object,
+            NullLogger<CrawlerService>.Instance);
     }
 
     [Fact]

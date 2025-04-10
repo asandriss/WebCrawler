@@ -1,8 +1,7 @@
 using System.Linq;
-using System.Reflection;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging.Abstractions;
 using Shouldly;
-using WebCrawler.Service;
 using Xunit;
 
 namespace WebCrawler.Service.Tests;
@@ -10,7 +9,7 @@ namespace WebCrawler.Service.Tests;
 [TestSubject(typeof(UrlCollection))]
 public class UrlCollectionTest
 {
-    private readonly UrlCollection _collection = new UrlCollection();
+    private readonly UrlCollection _collection = new UrlCollection(NullLogger<UrlCollection>.Instance);
     
     [Fact]
     public void Add_NewUrl_ShouldAddToPending()

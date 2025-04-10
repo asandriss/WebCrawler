@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Moq.Protected;
 using Shouldly;
@@ -23,7 +24,7 @@ public class WebBrowserTest
             Content = new StringContent(expect)
         };
         var httpClient = CreateMockHttpClient(responseMessage);
-        var browser = new WebBrowser(httpClient);
+        var browser = new WebBrowser(httpClient, NullLogger<WebBrowser>.Instance);
 
         var actual = await browser.GetPageHtml("http://unit.test");
 
