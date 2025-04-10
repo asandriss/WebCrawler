@@ -72,7 +72,7 @@ public class UrlCollectionTest
         const string baseUrl = "https://testing.com";
         const string page1 = $"{baseUrl}/page1";
 
-        var urls = new[] { baseUrl, page1, page1 }; 
+        var urls = new[] { baseUrl, page1, page1, page1.ToUpperInvariant() }; 
         foreach (var url in urls)
         {
             _collection.Add(url);
@@ -83,7 +83,8 @@ public class UrlCollectionTest
         _collection.HasNext().ShouldBeFalse();
         
         _collection.GetSeenCount(baseUrl).ShouldBe(1);
-        _collection.GetSeenCount(page1).ShouldBe(2);
+        _collection.GetSeenCount(page1).ShouldBe(3);
+        _collection.GetSeenCount(page1.ToUpperInvariant()).ShouldBe(3);
         _collection.GetSeenCount("Non-existent").ShouldBe(0);
     }
 }

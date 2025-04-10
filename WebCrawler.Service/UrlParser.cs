@@ -6,16 +6,29 @@ namespace WebCrawler.Service;
 public class UrlParser : IUrlParser
 {
     private readonly HtmlParser _parser = new HtmlParser();
-    
-    public IEnumerable<string> GetUrlsFromHtmlContent(string htmlContent, string baseUrl)
+
+    public IEnumerable<string?> GetUrlsFromHtmlContent(string htmlContent, string baseUrl)
     {
         var document = _parser.ParseDocument(htmlContent);
-        var links = document.QuerySelectorAll("a[href]")
-            .Select(el => el.GetAttribute("href"))
-            .Where(href => !string.IsNullOrWhiteSpace(href));
+        var anchorElements = document.QuerySelectorAll("a[href]");
+        
+        if (!Uri.TryCreate(baseUrl, UriKind.Absolute, out var baseUri))
+            yield break;
+        
+        foreach (var element in anchorElements )
+        {
+            var href = element.GetAttribute("href");
+            
+            if(string.IsNullOrWhiteSpace(href))
+                continue;
+            
+            if(!Uri.TryCreate(baseUri, href, out var createdUri))
+               continue;
+               
+            if(createdUri.Scheme != Uri.UriSchemeHttp && createdUri.Scheme != Uri.UriSchemeHttps)
+                continue;
 
-        return links
-            .Select(l => l.NormalizeUrl(baseUrl))
-            .Where(url => !string.IsNullOrWhiteSpace(url));
+            yield return createdUri.ToString();
+        }
     }
 }

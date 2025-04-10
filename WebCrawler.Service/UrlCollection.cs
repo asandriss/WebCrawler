@@ -32,7 +32,7 @@ public class UrlCollection : IUrlCollection
     {
         var next = _pending.Dequeue();
 
-        if (!Uri.TryCreate(next, UriKind.Absolute, out var uri)) return next;
+        if (!next.IsValidUrl()) return next;
             
         _visited.Add(next);
 
@@ -40,9 +40,14 @@ public class UrlCollection : IUrlCollection
     }
 
     public IEnumerable<string> VisitedUrl => _visited;
-    
+
     public int GetSeenCount(string url)
     {
-        return _normalizedSeenCounts.GetValueOrDefault(url, 0);
+        if(!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            return 0;
+        
+        var normalizedUri = uri.NormalizeUri();
+        
+        return _normalizedSeenCounts.GetValueOrDefault(normalizedUri, 0);
     }
 }

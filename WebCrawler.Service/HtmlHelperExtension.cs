@@ -22,5 +22,10 @@ public static class HtmlHelperExtension
         // we could probably extend this to include more options, like ports/users/etc.
         return $"{scheme}://{host}{path}";
     }
+
+    public static bool IsValidUrl(this string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out _);
+    }
 }
 
