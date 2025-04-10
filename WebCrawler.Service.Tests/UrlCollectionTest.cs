@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using JetBrains.Annotations;
 using Shouldly;
 using WebCrawler.Service;
@@ -92,6 +93,7 @@ public class UrlCollectionTest
     public void GetAllSeenCounts_ShouldReturnVisitedLinksWithCorrectCounts()
     {
         const string baseUrl = "http://test.com";
+        const string extBaseUrl = "http://external.com";
         const string page1 = $"{baseUrl}/page1";
         const string page1a = $"{baseUrl}/Page1/";
         const string page2 = $"{baseUrl}/PAGE2/";
@@ -101,6 +103,7 @@ public class UrlCollectionTest
         _collection.Add(page1a);
         _collection.Add(page1a); // intentionally added it twice
         _collection.Add(page2);
+        _collection.Add(extBaseUrl);
 
         while (_collection.HasNext())
         {
@@ -112,5 +115,6 @@ public class UrlCollectionTest
         actual.FirstOrDefault(a => a.Url == baseUrl).Count.ShouldBe(1);
         actual.FirstOrDefault(a => a.Url == page1).Count.ShouldBe(3);
         actual.FirstOrDefault(a => a.Url == page2).Count.ShouldBe(1);
+        actual.FirstOrDefault(a => a.Url == extBaseUrl).Count.ShouldBe(1);
     }
 }

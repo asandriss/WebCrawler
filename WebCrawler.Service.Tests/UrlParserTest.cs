@@ -1,7 +1,6 @@
 using System.Linq;
 using JetBrains.Annotations;
 using Shouldly;
-using WebCrawler.Service;
 using Xunit;
 
 namespace WebCrawler.Service.Tests;

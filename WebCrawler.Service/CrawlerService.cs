@@ -35,6 +35,12 @@ public class CrawlerService : ICrawler
         while (_collection.HasNext())
         {
             var currentUrl = _collection.GetNext();
+            if (!Uri.TryCreate(currentUrl, UriKind.Absolute, out var currentUri))
+                continue;
+            
+            if(currentUri.Host != domain)
+                continue;
+            
             var currentContent = await _browser.GetPageHtml(currentUrl);
 
             if (currentContent is null)
@@ -49,15 +55,7 @@ public class CrawlerService : ICrawler
             
             foreach (var link in linksOnPage)
             {
-                if (!Uri.TryCreate(link, UriKind.Absolute, out var linkUri))
-                    continue;
-
-                var linkDomain = linkUri.Host;
-
-                if (linkDomain == domain)
-                {
-                    _collection.Add(link);
-                }
+                _collection.Add(link);
             }
         }
     }
