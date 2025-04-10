@@ -50,4 +50,17 @@ public class UrlCollection : IUrlCollection
         
         return _normalizedSeenCounts.GetValueOrDefault(normalizedUri, 0);
     }
+
+    public IEnumerable<(string Url, int Count)> GetAllSeenCounts()
+    {
+        foreach (var url in _visited)
+        {
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
+            
+            var normalized = uri.NormalizeUri();
+            if (_normalizedSeenCounts.TryGetValue(normalized, out var count))
+                yield return (url, count);
+        }
+        
+    }
 }

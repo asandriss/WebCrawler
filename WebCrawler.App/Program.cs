@@ -12,7 +12,19 @@ if (args.Length != 1)
 var serviceProvider = ConfigureDepenencyInjection();
 
 var crawler = serviceProvider.GetService<ICrawler>();
+var collection = serviceProvider.GetRequiredService<IUrlCollection>();
+
 await crawler.RunAsync(args[0]);
+
+Console.WriteLine($"*** Ranked List of Links under {args[0]} ***");
+
+foreach (var (url, count) in collection
+             .GetAllSeenCounts()
+             .OrderByDescending(x => x.Count)
+             .ThenBy(x => x.Url))
+{
+    Console.WriteLine($"{count}x\t{url}");
+}
 
 ServiceProvider ConfigureDepenencyInjection()
 {
@@ -23,6 +35,5 @@ ServiceProvider ConfigureDepenencyInjection()
     services.AddSingleton<IUrlParser, UrlParser>();
     services.AddHttpClient<IWebBrowser, WebBrowser>();
 
-    var serviceProvider1 = services.BuildServiceProvider();
-    return serviceProvider1;
+    return services.BuildServiceProvider();
 }

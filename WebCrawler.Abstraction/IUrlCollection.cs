@@ -9,4 +9,5 @@ public interface IUrlCollection
     IEnumerable<string> VisitedUrl { get; }
 
     int GetSeenCount(string url);
+    IEnumerable<(string Url, int Count)> GetAllSeenCounts();
 }

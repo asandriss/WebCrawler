@@ -47,8 +47,6 @@ public class CrawlerService : ICrawler
                 .GetUrlsFromHtmlContent(currentContent, baseUrl.ToString())
                 .ToArray();
             
-            PrintToConsole(linksOnPage);
-
             foreach (var link in linksOnPage)
             {
                 if (!Uri.TryCreate(link, UriKind.Absolute, out var linkUri))
@@ -61,14 +59,6 @@ public class CrawlerService : ICrawler
                     _collection.Add(link);
                 }
             }
-        }
-    }
-
-    private void PrintToConsole(IEnumerable<string> linksOnPage)
-    {
-        foreach (var link in linksOnPage)
-        {
-            Console.WriteLine($"Found link {link}");
         }
     }
 }

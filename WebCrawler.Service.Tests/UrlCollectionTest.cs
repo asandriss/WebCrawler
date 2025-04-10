@@ -87,4 +87,30 @@ public class UrlCollectionTest
         _collection.GetSeenCount(page1.ToUpperInvariant()).ShouldBe(3);
         _collection.GetSeenCount("Non-existent").ShouldBe(0);
     }
+
+    [Fact]
+    public void GetAllSeenCounts_ShouldReturnVisitedLinksWithCorrectCounts()
+    {
+        const string baseUrl = "http://test.com";
+        const string page1 = $"{baseUrl}/page1";
+        const string page1a = $"{baseUrl}/Page1/";
+        const string page2 = $"{baseUrl}/PAGE2/";
+        
+        _collection.Add(baseUrl);
+        _collection.Add(page1);
+        _collection.Add(page1a);
+        _collection.Add(page1a); // intentionally added it twice
+        _collection.Add(page2);
+
+        while (_collection.HasNext())
+        {
+            _ = _collection.GetNext();
+        }
+        
+        var actual = _collection.GetAllSeenCounts().ToArray();
+        
+        actual.FirstOrDefault(a => a.Url == baseUrl).Count.ShouldBe(1);
+        actual.FirstOrDefault(a => a.Url == page1).Count.ShouldBe(3);
+        actual.FirstOrDefault(a => a.Url == page2).Count.ShouldBe(1);
+    }
 }
