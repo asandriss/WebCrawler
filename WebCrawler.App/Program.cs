@@ -14,7 +14,7 @@ var serviceProvider = ConfigureDepenencyInjection();
 var crawler = serviceProvider.GetService<ICrawler>();
 var collection = serviceProvider.GetRequiredService<IUrlCollection>();
 
-await crawler.RunAsync(args[0]);
+await crawler!.RunAsync(args[0]);
 
 Console.WriteLine($"*** Ranked List of Links under {args[0]} ***");
 
