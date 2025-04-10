@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCrawler.Service.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCrawler.Abstraction", "WebCrawler.Abstraction\WebCrawler.Abstraction.csproj", "{362B9008-090E-4592-8D1F-BCC56A6E7896}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCrawler.App", "WebCrawler.App\WebCrawler.App.csproj", "{8BA9087B-94F2-41B8-AAF0-7181E8EE0AE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{362B9008-090E-4592-8D1F-BCC56A6E7896}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{362B9008-090E-4592-8D1F-BCC56A6E7896}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{362B9008-090E-4592-8D1F-BCC56A6E7896}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA9087B-94F2-41B8-AAF0-7181E8EE0AE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA9087B-94F2-41B8-AAF0-7181E8EE0AE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA9087B-94F2-41B8-AAF0-7181E8EE0AE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA9087B-94F2-41B8-AAF0-7181E8EE0AE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
