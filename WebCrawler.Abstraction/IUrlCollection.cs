@@ -7,4 +7,6 @@ public interface IUrlCollection
     string GetNext();
     
     IEnumerable<string> VisitedUrl { get; }
+
+    int GetSeenCount(string url);
 }

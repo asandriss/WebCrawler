@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using WebCrawler.Abstraction;
 
 namespace WebCrawler.Service;
@@ -6,11 +7,23 @@ public class UrlCollection : IUrlCollection
 {
     private readonly Queue<string> _pending = new();
     private readonly HashSet<string> _visited = [];
-    
+    private readonly Dictionary<string, int> _normalizedSeenCounts = new();
+
     public void Add(string url)
     {
-        if(!_pending.Contains(url) && !_visited.Contains(url))
-            _pending.Enqueue(url);
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            return;
+
+        var normalizedUri = uri.NormalizeUri();
+
+        if (_normalizedSeenCounts.TryGetValue(normalizedUri, out int value))
+        {
+            _normalizedSeenCounts[normalizedUri] = ++value;
+            return;
+        }
+
+        _normalizedSeenCounts[normalizedUri] = 1;
+        _pending.Enqueue(url);
     }
 
     public bool HasNext() => _pending.Count > 0;
@@ -18,11 +31,18 @@ public class UrlCollection : IUrlCollection
     public string GetNext()
     {
         var next = _pending.Dequeue();
-        
+
+        if (!Uri.TryCreate(next, UriKind.Absolute, out var uri)) return next;
+            
         _visited.Add(next);
-        
+
         return next;
     }
 
     public IEnumerable<string> VisitedUrl => _visited;
+    
+    public int GetSeenCount(string url)
+    {
+        return _normalizedSeenCounts.GetValueOrDefault(url, 0);
+    }
 }

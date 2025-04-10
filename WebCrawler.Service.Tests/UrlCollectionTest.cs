@@ -65,4 +65,25 @@ public class UrlCollectionTest
         visted.ShouldBe(url);
         _collection.HasNext().ShouldBeFalse();
     }
+
+    [Fact]
+    public void Add_SameUrlTwice_ShouldVisitOnceAndDisplayCorrectCount()
+    {
+        const string baseUrl = "https://testing.com";
+        const string page1 = $"{baseUrl}/page1";
+
+        var urls = new[] { baseUrl, page1, page1 }; 
+        foreach (var url in urls)
+        {
+            _collection.Add(url);
+        }
+        
+        _collection.GetNext().ShouldBe(baseUrl);
+        _collection.GetNext().ShouldBe(page1);
+        _collection.HasNext().ShouldBeFalse();
+        
+        _collection.GetSeenCount(baseUrl).ShouldBe(1);
+        _collection.GetSeenCount(page1).ShouldBe(2);
+        _collection.GetSeenCount("Non-existent").ShouldBe(0);
+    }
 }
