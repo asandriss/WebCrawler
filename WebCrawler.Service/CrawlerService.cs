@@ -22,7 +22,12 @@ public class CrawlerService : ICrawler
 
     public async Task RunAsync(string startingUrl)
     {
-        var baseUrl = new Uri(startingUrl);
+        if (!Uri.TryCreate(startingUrl, UriKind.Absolute, out var baseUrl))
+        {
+            Console.WriteLine($"Invalid starting URL: [{startingUrl}]");
+            return;
+        }
+
         var domain = baseUrl.Host;
         
         _collection.Add(startingUrl);
@@ -32,14 +37,26 @@ public class CrawlerService : ICrawler
             var currentUrl = _collection.GetNext();
             var currentContent = await _browser.GetPageHtml(currentUrl);
 
-            if (currentContent == null) continue;
-            var linksOnPage = _parser.GetUrlsFromHtmlContent(currentContent, baseUrl.ToString()).ToArray();
+            if (currentContent is null)
+            {
+                Console.WriteLine($"Failed to fetch content for: [{currentUrl}]");
+                continue;
+            }
 
+            var linksOnPage = _parser
+                .GetUrlsFromHtmlContent(currentContent, baseUrl.ToString())
+                .ToArray();
+            
             PrintToConsole(linksOnPage);
 
             foreach (var link in linksOnPage)
             {
-                if (new Uri(link).Host == domain)
+                if (!Uri.TryCreate(link, UriKind.Absolute, out var linkUri))
+                    continue;
+
+                var linkDomain = linkUri.Host;
+
+                if (linkDomain == domain)
                 {
                     _collection.Add(link);
                 }
