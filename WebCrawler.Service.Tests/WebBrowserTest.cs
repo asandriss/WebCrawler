@@ -27,7 +27,7 @@ public class WebBrowserTest
         var browser = new WebBrowser(httpClient, NullLogger<WebBrowser>.Instance);
 
         var actual = await browser.GetPageHtml("http://unit.test");
-
+    
         actual.ShouldNotBeNull();
         actual.ShouldBe(expect);
     }
