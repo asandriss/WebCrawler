@@ -1,7 +1,9 @@
 # WebCrawler
 
-A lightweight, testable web crawler built in .NET using `HttpClient`, DI, and structured logging.  
+A lightweight, testable web crawler built in C# and .NET  
 Designed to traverse internal pages of a given website, collect links, and output a ranked list of all seen URLs.
+
+As it was meant for an interview, the focus was on code quaility and readability over feature bloat. Some suggested features are listed in the Further Improvements section below.
 
 ---
 
@@ -12,8 +14,8 @@ Designed to traverse internal pages of a given website, collect links, and outpu
 - Tracks both internal and external links
 - Skips re-visiting pages (deduplication based on normalized URLs)
 - Structured logging via `ILogger<T>` and Serilog
-- Clean dependency injection with `HttpClientFactory`
-- Fully unit tested (xUnit + Moq)
+- Clean separation of concerns and dependency injection
+- Fully unit tested (xUnit + Moq). Using Shouldly for Assetion readability.
 
 ---
 
