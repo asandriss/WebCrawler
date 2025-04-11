@@ -27,7 +27,7 @@ For example, starting at wikipedia.org will crawl only that subdomain and exclud
 Make sure .NET 7+ is installed.
 
 ```bash
-dotnet run --project WebCrawler.ConsoleApp "https://example.com"
+dotnet run --project WebCrawler.App "https://example.com"
 ```
 
 Output:
