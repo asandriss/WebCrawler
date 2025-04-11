@@ -61,12 +61,13 @@ public class CrawlerService : ICrawler
                 .GetUrlsFromHtmlContent(currentContent, baseUrl.ToString())
                 .ToArray();
             
-            _logger.LogInformation("Found [{NumLinksOnPage}] links on page [{Url}]. Adding to collection.", 
+            _logger.LogInformation("The following  [{NumLinksOnPage}] links found on links on page [{Url}]:", 
                 linksOnPage.Length,
                 currentUrl );
             
             foreach (var link in linksOnPage.Where(l => !string.IsNullOrWhiteSpace(l)))
             {
+                _logger.LogInformation("\tAdding link [{Link}]", link);
                 _collection.Add(link!);
             }
         }

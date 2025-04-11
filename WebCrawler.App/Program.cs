@@ -23,16 +23,6 @@ var collection = serviceProvider.GetRequiredService<IUrlCollection>();
 logger.LogInformation("Starting crawl at {Url}", args[0]);
 await crawler!.RunAsync(args[0]);
 
-logger.LogInformation($"*** Ranked List of Links under {args[0]} ***");
-
-foreach (var (url, count) in collection
-             .GetAllSeenCounts()
-             .OrderByDescending(x => x.Count)
-             .ThenBy(x => x.Url))
-{
-    Console.WriteLine($"{count}x\t{url}");
-}
-
 ServiceProvider ConfigureDepenencyInjection()
 {
     var services = new ServiceCollection();
