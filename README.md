@@ -71,6 +71,7 @@ Running the tests:
 ```
 dotnet test
 ```
+This should report all the tests passing. It will take about 3 seconds due to testing timeout on the crawler.
 
 ---
 
