@@ -27,7 +27,7 @@ public class WebBrowserTest
         var browser = new WebBrowser(httpClient, NullLogger<WebBrowser>.Instance);
 
         var actual = await browser.GetPageHtml("http://unit.test");
-    
+
         actual.ShouldNotBeNull();
         actual.ShouldBe(expect);
     }
@@ -47,5 +47,81 @@ public class WebBrowserTest
         {
             BaseAddress = new Uri("http://unit.test")
         };
+    }
+
+    [Fact]
+    public async Task GetPageHtml_NotFound_ShouldReturnNull()
+    {
+        var responseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
+        var httpClient = CreateMockHttpClient(responseMessage);
+        var browser = new WebBrowser(httpClient, NullLogger<WebBrowser>.Instance);
+
+        var actual = await browser.GetPageHtml("http://unit.test");
+
+        actual.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task GetPageHtml_ServerError_ShouldReturnNull()
+    {
+        var responseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+        var httpClient = CreateMockHttpClient(responseMessage);
+        var browser = new WebBrowser(httpClient, NullLogger<WebBrowser>.Instance);
+
+        var actual = await browser.GetPageHtml("http://unit.test");
+
+        actual.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task GetPageHtml_Timeout_ShouldReturnNull()
+    {
+        var timeOutInSeconds = 2;
+        var handlerMock = new Mock<HttpMessageHandler>();
+        
+        handlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .Returns<HttpRequestMessage, CancellationToken>(async (_, _) =>
+            {
+                await Task.Delay(TimeSpan.FromSeconds(timeOutInSeconds + 1));
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            });
+
+        var httpClient = new HttpClient(handlerMock.Object)
+        {
+            BaseAddress = new Uri("http://unit.test")
+        };
+        var browser = new WebBrowser(httpClient, NullLogger<WebBrowser>.Instance);
+
+        var actual = await browser.GetPageHtml("http://unit.test", timeOutInSeconds);
+
+        actual.ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task GetPageHtml_HttpRequestException_ShouldReturnNull()
+    {
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ThrowsAsync(new HttpRequestException("Network error"));
+
+        var httpClient = new HttpClient(handlerMock.Object)
+        {
+            BaseAddress = new Uri("http://unit.test")
+        };
+        var browser = new WebBrowser(httpClient, NullLogger<WebBrowser>.Instance);
+
+        var actual = await browser.GetPageHtml("http://unit.test");
+
+        actual.ShouldBeNull();
     }
 }

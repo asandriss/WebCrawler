@@ -49,8 +49,8 @@ public class CrawlerServiceTest
         _urlCollectionMock.Verify(c => c.Add("http://test.com/page1"), Times.AtLeastOnce);
         _urlCollectionMock.Verify(c => c.Add("http://external.com/extPage1"), Times.AtLeastOnce);
         
-        _browserMock.Verify(b => b.GetPageHtml("http://test.com/page1"), Times.Once);
-        _browserMock.Verify(b => b.GetPageHtml("http://external.com/extPage1"), Times.Never);
+        _browserMock.Verify(b => b.GetPageHtml("http://test.com/page1", It.IsAny<int>()), Times.Once);
+        _browserMock.Verify(b => b.GetPageHtml("http://external.com/extPage1", It.IsAny<int>()), Times.Never);
     }
 
     private void SetupParserMock(string[] linksToReturn) =>
@@ -61,7 +61,7 @@ public class CrawlerServiceTest
 
     private void SetupBrowserMock() =>
         _browserMock
-            .Setup(b => b.GetPageHtml(It.IsAny<string>()))
+            .Setup(b => b.GetPageHtml(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync("<html></html>");
 
     private void SetupCollectionMock(Queue<string> queue)

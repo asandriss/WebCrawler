@@ -1,9 +1,12 @@
 # WebCrawler
 
 A lightweight, testable web crawler built in C# and .NET  
-Designed to traverse internal pages of a given website, collect links, and output a ranked list of all seen URLs.
+Designed to traverse internal pages of a given website, collect links, and output a list of links on each page.
 
 As it was meant for an interview, the focus was on code quaility and readability over feature bloat. Some suggested features are listed in the Further Improvements section below.
+
+The crawler enforces strict subdomain matching based on the Host of the starting URL.
+For example, starting at wikipedia.org will crawl only that subdomain and exclude others like en.wikipedia.org or wikipedia.org, as per the test instructions.
 
 ---
 
